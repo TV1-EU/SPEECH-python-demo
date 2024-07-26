@@ -42,7 +42,7 @@ detailsQuery = gql(
             masterSocketUrl(languageCode: "de")
             name
             translationLanguages
-            viewerSocketUrl
+            viewerSocketUrl(enableVoiceover: true, languageCode: "EN-US")
             viewerWebUrl
         }
     }
@@ -91,6 +91,10 @@ async def get_transcript(url):
     async with websockets.connect(url) as websocket:
         while True:
             message = await websocket.recv()
+            # message contains an events array. Events:
+            # - transcript: the spoken text
+            # - translation: the translated text
+            # - voiceover: the translated audio in the language the viewer socket is subscribed to
             print(message)
 
 
